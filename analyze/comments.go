@@ -1,6 +1,8 @@
 package analyze
 
 import (
+	"encoding/json"
+	"net/http"
 	"regexp"
 
 	"github.com/deckarep/golang-set"
@@ -25,13 +27,13 @@ func AnalyzeComments(comments []*geddit.Comment) error {
 			for _, link := range linkSet.ToSlice() {
 				links = append(links, link.(string))
 			}
-			//go postReply(comment, links)
+			go postReply(comment, links)
 		}
 	}
 	return nil
 }
 
-/*func postReply(comment *geddit.Comment, links []string) {
+func postReply(comment *geddit.Comment, links []string) {
 	for _, link := range links {
 		var data map[string]interface{}
 		if err := getStats(link, &data); err != nil {
@@ -53,4 +55,4 @@ func getStats(link string, data *map[string]interface{}) error {
 		return err
 	}
 	return nil
-}*/
+}
