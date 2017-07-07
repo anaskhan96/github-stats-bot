@@ -7,12 +7,13 @@ import (
 
 	"net/http"
 
+	"./analyze"
 	"github.com/joho/godotenv"
 	"github.com/jzelinskie/geddit"
 )
 
 // default interval for hitting the api in seconds
-const interval = 3
+const interval = 1
 
 func main() {
 	var env map[string]string
@@ -54,5 +55,9 @@ func fetchComments(s *geddit.OAuthSession) {
 		log.Println(err)
 		return
 	}
-	log.Println(comments[0].Body)
+	err = analyze.AnalyzeComments(comments)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 }
