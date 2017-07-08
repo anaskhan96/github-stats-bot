@@ -54,7 +54,7 @@ func postReply(s *geddit.OAuthSession, comment *geddit.Comment, links []string) 
 		issuesURL := "https://" + link + "/issues"
 		pullsURL := "https://" + link + "/pulls"
 		reply += fmt.Sprintf("\n[%s](https://%s)\n\n> *Description*: %s\n\n> *Stars*: %d\n\n> *Forks*: %d\n\n> [Issues](%s) | [Pull Requests](%s)\n\n",
-			link, link, description, stargazers, forks, issuesURL, pullsURL)
+			link[11:], link, description, stargazers, forks, issuesURL, pullsURL)
 	}
 	reply += footer
 	if _, err := s.Reply(comment, reply); err != nil {
