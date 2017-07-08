@@ -12,7 +12,7 @@ import (
 )
 
 func AnalyzeComments(s *geddit.OAuthSession, comments []*geddit.Comment) error {
-	r, err := regexp.Compile(`github\.com\/\w+\/\w+`)
+	r, err := regexp.Compile(`github\.com\/[\w\-]+\/[\w\-]+`)
 	if err != nil {
 		return err
 	}
