@@ -48,12 +48,12 @@ func postReply(s *geddit.OAuthSession, comment *geddit.Comment, links []string) 
 		if data["message"] == "Not Found" {
 			return errors.New("Wrong GitHub API endpoint")
 		}
-		description := data["description"]
-		stargazers := data["stargazers_count"]
-		forks := data["forks_count"]
+		description := data["description"].(string)
+		stargazers := int(data["stargazers_count"].(float64))
+		forks := int(data["forks_count"].(float64))
 		issuesURL := "https://" + link + "/issues"
 		pullsURL := "https://" + link + "/pulls"
-		reply += fmt.Sprintf("\n[%s](https://%s)\n\n> *Description*: %v\n\n> *Stars*: %v\n\n> *Forks*: %v\n\n> [Issues](%s) | [Pull Requests](%s)\n\n",
+		reply += fmt.Sprintf("\n[%s](https://%s)\n\n> *Description*: %s\n\n> *Stars*: %d\n\n> *Forks*: %d\n\n> [Issues](%s) | [Pull Requests](%s)\n\n",
 			link[11:], link, description, stargazers, forks, issuesURL, pullsURL)
 	}
 	reply += footer
