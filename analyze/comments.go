@@ -54,7 +54,7 @@ func postReply(s *geddit.OAuthSession, comment *geddit.Comment, links []string) 
 		description := data["description"].(string)
 		// The things I have to do to check if it's a bot
 		if strings.Contains(strings.ToLower(description), "bot") {
-			continue
+			return nil
 		}
 		stargazers := int(data["stargazers_count"].(float64))
 		forks := int(data["forks_count"].(float64))
