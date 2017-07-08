@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"regexp"
 
+	"strings"
+
 	"github.com/deckarep/golang-set"
 	"github.com/jzelinskie/geddit"
 )
@@ -17,7 +19,7 @@ func AnalyzeComments(s *geddit.OAuthSession, comments []*geddit.Comment) error {
 		return err
 	}
 	for _, comment := range comments {
-		if comment.Author == "github-stats-bot" {
+		if (comment.Author == "github-stats-bot") || (strings.Contains(strings.ToLower(comment.Author), "bot")) {
 			continue
 		}
 		if r.MatchString(comment.Body) {
