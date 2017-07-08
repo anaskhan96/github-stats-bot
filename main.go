@@ -13,7 +13,7 @@ import (
 )
 
 // default interval for hitting the api in seconds
-const interval = 1
+const interval = 2
 
 func main() {
 	var env map[string]string

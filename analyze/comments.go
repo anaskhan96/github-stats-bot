@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"regexp"
 
@@ -62,6 +63,7 @@ func postReply(s *geddit.OAuthSession, comment *geddit.Comment, links []string) 
 	if _, err := s.Reply(comment, reply); err != nil {
 		return err
 	}
+	log.Println("Replied to", comment.Author)
 	return nil
 }
 
