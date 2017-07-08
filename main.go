@@ -55,7 +55,7 @@ func fetchComments(s *geddit.OAuthSession) {
 		log.Println(err)
 		return
 	}
-	err = analyze.AnalyzeComments(comments)
+	err = analyze.AnalyzeComments(s, comments)
 	if err != nil {
 		log.Println(err)
 		return

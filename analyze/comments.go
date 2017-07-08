@@ -11,7 +11,7 @@ import (
 	"github.com/jzelinskie/geddit"
 )
 
-func AnalyzeComments(comments []*geddit.Comment) error {
+func AnalyzeComments(s *geddit.OAuthSession, comments []*geddit.Comment) error {
 	r, err := regexp.Compile(`github\.com\/\w+\/\w+`)
 	if err != nil {
 		return err
@@ -29,7 +29,7 @@ func AnalyzeComments(comments []*geddit.Comment) error {
 			for _, link := range linkSet.ToSlice() {
 				links = append(links, link.(string))
 			}
-			if err = postReply(comment, links); err != nil {
+			if err = postReply(s, comment, links); err != nil {
 				return err
 			}
 		}
@@ -37,7 +37,7 @@ func AnalyzeComments(comments []*geddit.Comment) error {
 	return nil
 }
 
-func postReply(comment *geddit.Comment, links []string) error {
+func postReply(s *geddit.OAuthSession, comment *geddit.Comment, links []string) error {
 	footer := "***\n^(This is Earth radio, and now here's human music ♫)\n\n^[Source](https://github.com/anaskhan96/github-stats-bot) ^| ^[PMme](https://np.reddit.com/message/compose?to=github-stats-bot)"
 	var reply string
 	for _, link := range links {
@@ -57,6 +57,9 @@ func postReply(comment *geddit.Comment, links []string) error {
 			link, link, description, stargazers, forks, issuesURL, pullsURL)
 	}
 	reply += footer
+	if _, err := s.Reply(comment, reply); err != nil {
+		return err
+	}
 	return nil
 }
 
