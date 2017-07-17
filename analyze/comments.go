@@ -41,6 +41,7 @@ func AnalyzeComments(s *geddit.OAuthSession, comments []*geddit.Comment) error {
 }
 
 func postReply(s *geddit.OAuthSession, comment *geddit.Comment, links []string) error {
+	defer logError()
 	footer := "***\n^(This is Earth radio, and now here's human music ♫)\n\n^[Source](https://github.com/anaskhan96/github-stats-bot) ^| ^[PMme](https://np.reddit.com/message/compose?to=github-stats-bot)"
 	var reply string
 	for _, link := range links {
@@ -81,4 +82,11 @@ func getStats(link string, data *map[string]interface{}) error {
 		return err
 	}
 	return nil
+}
+
+// Apart from helping in logging any unusual panics, also helps in reporting interface conversion errors
+func logError() {
+	if r := recover(); r != nil {
+		log.Println(r)
+	}
 }
