@@ -20,7 +20,7 @@ func AnalyzeComments(s *geddit.OAuthSession, comments []*geddit.Comment) error {
 		return err
 	}
 	for _, comment := range comments {
-		if (comment.Author == "github-stats-bot") || (strings.Contains(strings.ToLower(comment.Author), "bot")) {
+		if (comment.Author == "github-stats-bot") || (comment.Author == "Lapis_Mirror") || (strings.Contains(strings.ToLower(comment.Author), "bot")) {
 			continue
 		}
 		if r.MatchString(comment.Body) {
