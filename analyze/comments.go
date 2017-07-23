@@ -15,8 +15,9 @@ import (
 )
 
 var bots = map[string]bool{
-	"github-stats-bot": true,
-	"Lapis_Mirror":     true,
+	"github-stats-bot":    true,
+	"Lapis_Mirror":        true,
+	"Reply-Dota-2-Reddit": true,
 }
 
 func AnalyzeComments(s *geddit.OAuthSession, comments []*geddit.Comment) error {
