@@ -43,7 +43,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func startPolling(s *geddit.OAuthSession) {
+	tokenTime := time.Now()
 	for {
+		if time.Since(tokenTime).Hours() == 1 {
+			s = refreshLogin()
+			tokenTime = time.Now()
+		}
 		time.Sleep(interval * time.Second)
 		go fetchComments(s)
 	}
@@ -60,4 +65,24 @@ func fetchComments(s *geddit.OAuthSession) {
 		log.Println(err)
 		return
 	}
+}
+
+func refreshLogin() *geddit.OAuthSession {
+	time.Sleep(interval * time.Second)
+	log.Println("Authenticating a new login")
+	var env map[string]string
+	env, err := godotenv.Read()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	session, err := geddit.NewOAuthSession(env["clientID"], env["clientSecret"], env["userAgent"], env["redirectURL"])
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = session.LoginAuth(env["username"], env["password"])
+	if err != nil {
+		log.Fatal(err)
+	}
+	return session
 }
