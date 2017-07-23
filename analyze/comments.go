@@ -14,13 +14,18 @@ import (
 	"github.com/jzelinskie/geddit"
 )
 
+var bots = map[string]bool{
+	"github-stats-bot": true,
+	"Lapis_Mirror":     true,
+}
+
 func AnalyzeComments(s *geddit.OAuthSession, comments []*geddit.Comment) error {
 	r, err := regexp.Compile(`github\.com\/[\w\-]+\/[\w\-]+`)
 	if err != nil {
 		return err
 	}
 	for _, comment := range comments {
-		if (comment.Author == "github-stats-bot") || (comment.Author == "Lapis_Mirror") || (strings.Contains(strings.ToLower(comment.Author), "bot")) {
+		if (bots[comment.Author]) || (strings.Contains(strings.ToLower(comment.Author), "bot")) {
 			continue
 		}
 		if r.MatchString(comment.Body) {
